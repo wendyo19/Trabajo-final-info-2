@@ -57,26 +57,22 @@ class modelo:
     def tratamiento(self):
         return self.__tratamiento
     
-    def explorar(self, parte_seleccioanda):
-        parte_seleccioanda = []
-        for i in parte_seleccioanda:
-            query = '''
-                   SELECT g.nombre, g.descripcion, e.nombre, e.sintomas, e.espacilitas, e.tratamiento
-                    FROM general g
-                    INNER JOIN enfermedad e ON g.ID 0 e.ID
-                     WHERE g.nombre = %s
-                       '''
-            self.__cursor.execute(query, (parte_seleccioanda))
-            parte_seleccioanda.append(dict(self.__cursor.fetchone()))#extrae informacion de la tabla
-        return parte_seleccioanda
-
-
-
-
+    #forma 1 de explorar
+    def explorar(self, ID):
+        try:
+            sql = "SELECT * FROM general WHERE ID = %s"
+            sql2 = "SELECT * FROM enfermedades WHERE ID = %s"
+            vals = (ID,)
+            self.__cursor.execute(sql,sql2, vals)
+            record = self.__cursor.fetchone()
+            return record   
+        except ConnectionError as err:
+            return err
 modelo = modelo()
-parte_seleccionada = modelo.explorar(["Cerebrum", "Cerebelo"])
-for parte in parte_seleccionada:
-    print(parte)
+ID = 1
+record = modelo.explorar(ID)
+print(record)
+for parte in record:
     print(f"Nombre: {parte['nombre']}")
     print(f"Descripción: {parte['descripcion']}")
     print(f"Enfermedad: {parte['nombre_enfermedad']}")
@@ -86,3 +82,20 @@ for parte in parte_seleccionada:
     print(f"ID: {parte['ID']}")
     print(f"ID de enfermedad: {parte['id_enfermedad']}")
     print()
+    #forma 2 de explorar
+    def  explorar ( self , parte_seleccionada ):
+        parte_seleccionada  = []
+        for  i  in  parte_seleccionada:
+            consulta  =  '''
+                   SELECCIONE g.nombre, g.descripcion, e.nombre, e.sintomas, e.espacilitas, e.tratamiento
+                    DE general g
+                    INNER JOIN enfermedad e ON g.ID 0 e.ID
+                     DONDE g.nombre = %s
+                       '''
+            self. __cursor . ejecutar ( consulta , ( parte_seleccionada ))
+            parte_seleccionada.append( dict ( self.__cursor.fetchone ())) #información extra de la tabla
+        return  parte_seleccionada
+
+
+
+
