@@ -68,34 +68,26 @@ class modelo:
             return record   
         except ConnectionError as err:
             return err
-modelo = modelo()
-ID = 1
-record = modelo.explorar(ID)
-print(record)
-for parte in record:
-    print(f"Nombre: {parte['nombre']}")
-    print(f"Descripción: {parte['descripcion']}")
-    print(f"Enfermedad: {parte['nombre_enfermedad']}")
-    print(f"Sintomas: {parte['sintomas']}")
-    print(f"Especialista: {parte['especialista']}")
-    print(f"Tratamiento: {parte['tratamiento']}")
-    print(f"ID: {parte['ID']}")
-    print(f"ID de enfermedad: {parte['id_enfermedad']}")
-    print()
+
+
     #forma 2 de explorar
-    def  explorar ( self , parte_seleccionada ):
-        parte_seleccionada  = []
-        for  i  in  parte_seleccionada:
-            consulta  =  '''
-                   SELECCIONE g.nombre, g.descripcion, e.nombre, e.sintomas, e.espacilitas, e.tratamiento
-                    DE general g
-                    INNER JOIN enfermedad e ON g.ID 0 e.ID
-                     DONDE g.nombre = %s
-                       '''
-            self. __cursor . ejecutar ( consulta , ( parte_seleccionada ))
-            parte_seleccionada.append( dict ( self.__cursor.fetchone ())) #información extra de la tabla
-        return  parte_seleccionada
+    #def  explorar ( self , parte_seleccionada ):
+        #parte_seleccionada  = []
+        #for  i  in  parte_seleccionada:
+           # consulta  =  '''
+                #   SELECCIONE g.nombre, g.descripcion, e.nombre, e.sintomas, e.espacilitas, e.tratamiento
+                 #   DE general g
+                 #   INNER JOIN enfermedad e ON g.ID 0 e.ID
+                 #    DONDE g.nombre = %s
+                 #      '''
+            #self. __cursor . ejecutar ( consulta , ( parte_seleccionada ))
+            #parte_seleccionada.append( dict ( self.__cursor.fetchone ())) #información extra de la tabla
+       # return  parte_seleccionada
 
 
+#probar forma 1
+#modelo = modelo("Cerebrum", "Es la parte más grande del cerebro y es responsable de la mayoría de las funciones cognitivas.", "Alzheimer", "Deterioro cognitivo", "Neurologista", "Terapia cognitiva", 1, 1)
+#modelo_test = modelo("Cerebrum", "Es la parte más grande del cerebro y es responsable de la mayoría de las funciones cognitivas.", "Alzheimer", "Deterioro cognitivo", "Neurologista", "Terapia cognitiva", 1, 1)
+#record = modelo_test.explorar(1)
 
 
