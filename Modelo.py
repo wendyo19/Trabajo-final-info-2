@@ -20,6 +20,11 @@ class modelo:
         self.__especialista = especialista
         self.__tratamiento = tratamiento
 
+        self.__cnx = mysql.connector.connect(
+            user='admin123', password='contrasena123', host='localhost', database='info2'
+        )
+        self.__cursor = self.__cnx.cursor()
+
     def setlogin(self, admin123):
         self.__login = admin123
     def setPassword(self, contrasena123):
@@ -34,7 +39,7 @@ class modelo:
     def id_enfermedad(self):
         return self.__id_enfermedad
     
-    def parte_del_cerebro(self):
+    def nombre(self):
         return self.__parte_del_cerebro
     
     def definicion(self):
@@ -52,5 +57,32 @@ class modelo:
     def tratamiento(self):
         return self.__tratamiento
     
-    
-    
+    def explorar(self, parte_seleccioanda):
+        parte_seleccioanda = []
+        for i in parte_seleccioanda:
+            query = '''
+                   SELECT g.nombre, g.descripcion, e.nombre, e.sintomas, e.espacilitas, e.tratamiento
+                    FROM general g
+                    INNER JOIN enfermedad e ON g.ID 0 e.ID
+                     WHERE g.nombre = %s
+                       '''
+            self.__cursor.execute(query, (parte_seleccioanda))
+            parte_seleccioanda.append(dict(self.__cursor.fetchone()))#extrae informacion de la tabla
+        return parte_seleccioanda
+
+
+
+
+modelo = modelo()
+parte_seleccionada = modelo.explorar(["Cerebrum", "Cerebelo"])
+for parte in parte_seleccionada:
+    print(parte)
+    print(f"Nombre: {parte['nombre']}")
+    print(f"Descripción: {parte['descripcion']}")
+    print(f"Enfermedad: {parte['nombre_enfermedad']}")
+    print(f"Sintomas: {parte['sintomas']}")
+    print(f"Especialista: {parte['especialista']}")
+    print(f"Tratamiento: {parte['tratamiento']}")
+    print(f"ID: {parte['ID']}")
+    print(f"ID de enfermedad: {parte['id_enfermedad']}")
+    print()
